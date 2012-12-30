@@ -68,5 +68,5 @@ $month_arr = $modx->fromJSON($modx->lexicon('da_months'));
 $m = date("n", $date);
 $month = $month_arr[$m - 1];
 
-$format = str_replace('F', $month, $dateFormat);
+$format = preg_replace("~(?<!\\\\)F~U",preg_replace('~(\w{1})~u','\\\${1}',$month),$dateFormat);
 return date($format ,$date);
