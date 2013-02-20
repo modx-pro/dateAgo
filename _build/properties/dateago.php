@@ -17,21 +17,21 @@ $properties = array(
 		'name' => 'dateFormat'
 		,'desc' => 'da_dateFormat'
 		,'type' => 'textfield'
-		,'value' => 'd F Y, H:i'
+		,'value' => '%a %e. %B %Y, %H:%M'
 		,'lexicon' => 'dateago:properties'
 	)
 	,array(
 		'name' => 'dateNow'
 		,'desc' => 'da_dateNow'
 		,'type' => 'numberfield'
-		,'value' => 10
+		,'value' => '59'
 		,'lexicon' => 'dateago:properties'
 	)
 	,array(
 		'name' => 'dateDay'
 		,'desc' => 'da_dateDay'
 		,'type' => 'textfield'
-		,'value' => 'day H:i'
+		,'value' => 'day %H:%M'
 		,'lexicon' => 'dateago:properties'
 	)
 	,array(
@@ -45,7 +45,7 @@ $properties = array(
 		'name' => 'dateHours'
 		,'desc' => 'da_dateHours'
 		,'type' => 'numberfield'
-		,'value' => '10'
+		,'value' => '12'
 		,'lexicon' => 'dateago:properties'
 	)
 
