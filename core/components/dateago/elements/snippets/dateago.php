@@ -18,7 +18,7 @@ $current = !empty($scriptProperties['current']) ? $scriptProperties['current'] :
 $delta = $current - $date;
 
 if ($scriptProperties['dateNow']) {
-	if ($delta < $scriptProperties['dateNow']) {return $modx->lexicon('da_now');}
+    if ($delta < $scriptProperties['dateNow']) {return $modx->lexicon('da_now');}
 }
 
 if ($scriptProperties['dateMinutes']) {
@@ -59,14 +59,9 @@ if ($scriptProperties['dateDay']) {
 		default: $day = null;
 	}
 	if($day) {
-		$format = str_replace("day",preg_replace("#(\w{1})#",'\\\${1}',$day),$scriptProperties['dateDay']);
-		return date($format,$date);
+		$format = str_replace('day',$day,$scriptProperties['dateDay']);
+		return strftime($format,$date);
 	}
 }
 
-$month_arr = $modx->fromJSON($modx->lexicon('da_months'));
-$m = date("n", $date);
-$month = $month_arr[$m - 1];
-
-$format = preg_replace("~(?<!\\\\)F~U",preg_replace('~(\w{1})~u','\\\${1}',$month),$dateFormat);
-return date($format ,$date);
+return strftime($dateFormat ,$date);
