@@ -1,27 +1,35 @@
 <?php
-/*
+/**
  * Formats date to "10 minutes ago" or "Yesterday in 22:10"
  * This algorithm taken from https://github.com/livestreet/livestreet/blob/7a6039b21c326acf03c956772325e1398801c5fe/engine/modules/viewer/plugs/function.date_format.php
- * @param $input Date to format
- * @param $dateFormat Default format of date
- * */
+ *
+ * @var array $scriptProperties
+ * @var string $input Date to format
+ */
 if (empty($input)) {return false;}
-if (!empty($options) && $options = $modx->fromJSON($options)) {$scriptProperties = array_merge($scriptProperties,$options);}
+if (!empty($options) && $options = $modx->fromJSON($options)) {
+	$scriptProperties = array_merge($scriptProperties,$options);
+}
 
 require_once(MODX_CORE_PATH . 'components/dateago/include/declension.php');
 $modx->lexicon->load('dateago:default');
 
-$date = preg_match('/^\d+$/',$input) ?  $input : strtotime($input);
+$date = preg_match('/^\d+$/',$input)
+	? $input
+	: strtotime($input);
+$current = !empty($scriptProperties['current'])
+	? $scriptProperties['current']
+	: time();
 $dateFormat = $scriptProperties['dateFormat'];
-$current = !empty($scriptProperties['current']) ? $scriptProperties['current'] : time();
-
 $delta = $current - $date;
 
-if ($scriptProperties['dateNow']) {
-	if ($delta < $scriptProperties['dateNow']) {return $modx->lexicon('da_now');}
+if (!empty($scriptProperties['dateNow'])) {
+	if ($delta < $scriptProperties['dateNow']) {
+		return $modx->lexicon('da_now');
+	}
 }
 
-if ($scriptProperties['dateMinutes']) {
+if (!empty($scriptProperties['dateMinutes'])) {
 	$minutes = round(($delta) / 60);
 	if ($minutes < $scriptProperties['dateMinutes']) {
 		if ($minutes > 0) {
@@ -33,7 +41,7 @@ if ($scriptProperties['dateMinutes']) {
 	}
 }
 
-if ($scriptProperties['dateHours']) {
+if (!empty($scriptProperties['dateHours'])) {
 	$hours = round(($delta) / 3600);
 	if ($hours < $scriptProperties['dateHours']) {
 		if ($hours > 0) {
@@ -45,7 +53,7 @@ if ($scriptProperties['dateHours']) {
 	}
 }
 
-if ($scriptProperties['dateDay']) {
+if (!empty($scriptProperties['dateDay'])) {
 	switch(date('Y-m-d', $date)) {
 		case date('Y-m-d'):
 			$day = $modx->lexicon('da_today');
@@ -56,7 +64,8 @@ if ($scriptProperties['dateDay']) {
 		case date('Y-m-d', mktime(0, 0, 0, date('m')  , date('d')+1, date('Y')) ):
 			$day = $modx->lexicon('da_tomorrow');
 			break;
-		default: $day = null;
+		default:
+			$day = null;
 	}
 	if($day) {
 		$format = str_replace("day",preg_replace("#(\w{1})#",'\\\${1}',$day),$scriptProperties['dateDay']);
@@ -68,5 +77,6 @@ $month_arr = $modx->fromJSON($modx->lexicon('da_months'));
 $m = date("n", $date);
 $month = $month_arr[$m - 1];
 
-$format = preg_replace("~(?<!\\\\)F~U",preg_replace('~(\w{1})~u','\\\${1}',$month),$dateFormat);
+$format = preg_replace("~(?<!\\\\)F~U", preg_replace('~(\w{1})~u','\\\${1}',$month), $dateFormat);
+
 return date($format ,$date);

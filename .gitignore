@@ -1,1 +1,5 @@
 config.core.php
+.DS_Store
+.gitignore
+.idea
+config.core.php

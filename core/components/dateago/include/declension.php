@@ -6,6 +6,7 @@
  * @param int $count
  * @param string $forms
  * @param string $lang
+ *
  * @return string
  * */
 function declension($count, $forms, $lang = null) {
