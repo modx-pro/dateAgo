@@ -1,24 +1,32 @@
 <?php
-/**
- * Add snippets to build
- * 
- * @package dateago
- * @subpackage build
- */
+
 $snippets = array();
 
-$snippets[0]= $modx->newObject('modSnippet');
-$snippets[0]->fromArray(array(
-	'id' => 0
-	,'name' => 'dateAgo'
-	,'description' => 'Snippet that makes your dates look cool.'
-	,'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/dateago.php')
-	,'source' => 1
-	,'static' => 1
-	,'static_file' => 'core/components/dateago/elements/snippets/dateago.php'
-),'',true,true);
-$properties = include $sources['build'].'properties/dateago.php';
-$snippets[0]->setProperties($properties);
-unset($properties);
+$tmp = array(
+	'dateAgo' => array(
+		'file' => 'dateago',
+		'description' => '',
+	),
+);
 
+foreach ($tmp as $k => $v) {
+	/* @avr modSnippet $snippet */
+	$snippet = $modx->newObject('modSnippet');
+	$snippet->fromArray(array(
+		'id' => 0,
+		'name' => $k,
+		'description' => @$v['description'],
+		'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/snippet.'.$v['file'].'.php'),
+		'static' => BUILD_SNIPPET_STATIC,
+		'source' => 1,
+		'static_file' => 'core/components/'.PKG_NAME_LOWER.'/elements/snippets/snippet.'.$v['file'].'.php',
+	),'',true,true);
+
+	$properties = include $sources['build'].'properties/properties.'.$v['file'].'.php';
+	$snippet->setProperties($properties);
+
+	$snippets[] = $snippet;
+}
+
+unset($tmp, $properties);
 return $snippets;
