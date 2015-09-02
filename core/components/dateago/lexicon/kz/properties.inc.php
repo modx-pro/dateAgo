@@ -1,6 +1,6 @@
 <?php
 /**
- * Properties Russian Lexicon Entries for dateAgo
+ * Properties Kazakh Lexicon Entries for dateAgo
  *
  * @package dateago
  * @subpackage lexicon
