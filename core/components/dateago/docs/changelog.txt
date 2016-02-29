@@ -1,5 +1,10 @@
 Changelog for dateAgo.
 
+1.0.4
+==============
+- Improved support of future dates.
+- Added german translation by exside.
+
 1.0.3
 ==============
 - Added kazakh lexicon.
